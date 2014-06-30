@@ -30,7 +30,7 @@ class Album
       :rating => @rating,
       :url => @url,
       :year => @year
-    })
+    }) + "\n\n"
   end
 
   def find_youtube_video

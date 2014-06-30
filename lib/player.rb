@@ -1,9 +1,5 @@
 
 class Player
-  def init
-    `touch #{SKIP_FILE}`
-  end
-
   def play_youtube_video album
     video = album.find_youtube_video
 
@@ -21,14 +17,20 @@ class Player
   def find_and_play_tracks album
     sleep 2
     rand = (0...8).map { (65 + rand(26)).chr }.join
-    OpenInteractive.open("mpsyt album #{album.title}", [
+    Tmux.open "mpsyt album #{album.title}"
+    Tmux.send_lines [
       album.primary_artist,
       "",
       "add all",
       "save #{rand}",
       "play #{rand}",
       "exit"
-    ])
+    ]
+  end
+
+  def kill_current_player
+    system 'ps a | grep mpsyt | grep -o "[0-9][0-9]* pts" | grep -o "[0-9]*" | xargs kill -9'
+    Tmux.send_lines ['clear']
   end
 
   def play_genre genre
@@ -40,18 +42,29 @@ class Player
 
           puts album
 
-          if false
-            play_youtube_video album
+          if album.skip?
+            puts "skipping album ..."
           else
             find_and_play_tracks album
-          end
 
-          return if $done
+            return if $done
 
-          puts "Skip this album in the future? (Y/N)"
-          should_skip = $stdin.gets.chomp
-          if should_skip.downcase == "y"
-            album.skip_album_in_future
+            puts "    [enter] next album    [s] next album + skip this album in the future"
+            while true
+              ch = $stdin.getch
+              if ch == "s"
+                album.skip_album_in_future
+                break
+              elsif ch.ord == 13 || ch.ord == 3 # Enter / Ctrl-C
+                break
+              elsif ch.ord == 26 # Ctrl-Z
+                cleanup()
+              else
+                Tmux.send_key ch
+              end
+            end
+
+            kill_current_player
           end
 
           puts "\n\r\n\r"
