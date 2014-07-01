@@ -43,9 +43,10 @@ class Player
   def find_and_play_tracks album
     sleep 2
     rand = (0...8).map { (65 + rand(26)).chr }.join
-    Tmux.open "mpsyt album #{album.title}"
+    Tmux.open "mpsyt album #{album.title.match(/^[a-zA-Z0-9 ]*/).to_s}"
     Tmux.send_lines [
       album.primary_artist,
+      "",
       "",
       "add all",
       "save #{rand}",
@@ -75,7 +76,7 @@ class Player
             while true
               ch = $stdin.getch
               if ch == "s"
-                album.skip_album_in_future
+                album.skip_in_future
                 break
               elsif ch.ord == 13 || ch.ord == 3 # Enter / Ctrl-C
                 break
