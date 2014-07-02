@@ -43,7 +43,7 @@ class Player
   def find_and_play_tracks album
     sleep 2
     rand = (0...8).map { (65 + rand(26)).chr }.join
-    Tmux.open "mpsyt album #{album.title.match(/^[a-zA-Z0-9 ]*/).to_s}"
+    Tmux.open "mpsyt album #{album.title}"
     Tmux.send_lines [
       album.primary_artist,
       "",
