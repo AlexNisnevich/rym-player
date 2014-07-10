@@ -7,7 +7,7 @@ class Options
     }
 
     OptionParser.new do |opts|
-      opts.banner = "Usage: ruby ./rym-listen.rb [options]"
+      opts.banner = "Usage: ruby ./rym-player.rb [options]"
 
       opts.on("-g", "--genre [GENRE]", "Limit search to the given genre") do |genre|
         options[:genre] = genre
@@ -27,7 +27,7 @@ class Options
       end
 
       opts.on_tail("-v", "--version", "Show version") do
-        puts "rym-listen #{VERSION}"
+        puts "rym-player #{VERSION}"
         exit
       end
     end.parse!(args)
