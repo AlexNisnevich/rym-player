@@ -19,7 +19,11 @@ class Player
       album.title = albumDom.css('.album').text
       album.artists = albumDom.css('.artist').map {|x| x.text}
       album.genres = albumDom.css('.genre').map {|x| x.text}.join(", ")
-      album.year = albumDom.css('span:last').text[1...-1]
+      album.year = if @year == "alltime"
+                     albumDom.css('span:last').text[1...-1]
+                   else
+                     @year
+                   end
       album.rating = albumDom.css('div:last b:first').text
       album.url = "http://rateyourmusic.com#{albumDom.css('.album').first.attributes['href'].value}"
       album

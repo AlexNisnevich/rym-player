@@ -1,0 +1,5 @@
+source 'https://rubygems.org' 
+gem 'google-api-client'
+gem 'trollop'
+gem 'nokogiri'
+gem 'unidecoder'
