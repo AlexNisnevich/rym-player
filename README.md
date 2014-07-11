@@ -32,3 +32,16 @@ The available options are:
     -h, --help                       Show this message
     -v, --version                    Show version
 ```
+
+## Song Notifications
+
+If you have [libnotify](https://wiki.archlinux.org/index.php/Desktop_notifications) installed and configured, you can receive a desktop notification as each track begins playing.
+
+To set up song notifications, download [my branch of mps-youtube](https://github.com/AlexNisnevich/mps-youtube) and install it with 
+```
+sudo pip3 install -e [path to mps-youtube]
+```
+Then set up song notifications with:
+```
+mpsyt set notifier "ruby [path to rym-player]/notifier.rb", quit
+```
