@@ -74,7 +74,8 @@ class Player
           if album.skip?
             puts "skipping album ..."
           else
-            find_and_play_tracks album
+            # find_and_play_tracks album
+            play_youtube_video album
 
             puts "    [enter] next album    [s] next album + skip this album in the future"
             while true
